@@ -1,1 +1,1 @@
-# test EKS-A gitops integration
+# for testing EKS-A gitops integration purpose
