@@ -1,0 +1,53 @@
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: Cluster
+metadata:
+  name: eksa-gitops-workload-105
+  namespace: default
+spec:
+  clusterNetwork:
+    cniConfig:
+      cilium: {}
+    pods:
+      cidrBlocks:
+      - 192.168.0.0/16
+    services:
+      cidrBlocks:
+      - 10.96.0.0/12
+  controlPlaneConfiguration:
+    count: 1
+    endpoint:
+      host: "192.168.1.95"
+    machineGroupRef:
+      kind: TinkerbellMachineConfig
+      name: eksa-aio-mc-wl
+  datacenterRef:
+    kind: TinkerbellDatacenterConfig
+    name: eksa-aio-dcc-wl
+  kubernetesVersion: "1.29"
+  managementCluster:
+    name: eksa-gitops-mgmt-171
+---
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: TinkerbellDatacenterConfig
+metadata:
+  name: eksa-aio-dcc-wl
+  namespace: default
+spec:
+  # This is the IP used for load balancing all the Tinkerbell components that are transferred to the actual
+  # cluster from bootstrap cluster and this should be in the same subnet as the control-plane vip provided above
+  tinkerbellIP: "192.168.1.67"
+  osImageURL: "http://192.168.1.80:9900/ubuntu-jammy-eks-anywhere-pro-realtime-minimal-amd64-eks-anywhere-1-29-pro-realtime.raw.gz"
+  hookImagesURLPath: "http://192.168.1.80:9900/hook"
+
+---
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: TinkerbellMachineConfig
+metadata:
+  name: eksa-aio-mc-wl
+  namespace: default
+spec:
+  hardwareSelector:
+    type: aio-wl
+  osFamily: ubuntu
+  users:
+  - name: ec2-user
