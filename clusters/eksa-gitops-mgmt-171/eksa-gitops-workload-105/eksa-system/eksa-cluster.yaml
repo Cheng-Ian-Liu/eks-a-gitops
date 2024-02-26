@@ -23,7 +23,7 @@ spec:
   datacenterRef:
     kind: TinkerbellDatacenterConfig
     name: eksa-aio-dcc-wl
-  eksaVersion: v0.18.0
+  eksaVersion: v0.18.7
   kubernetesVersion: "1.26"
   managementCluster:
     name: eksa-gitops-mgmt-171
