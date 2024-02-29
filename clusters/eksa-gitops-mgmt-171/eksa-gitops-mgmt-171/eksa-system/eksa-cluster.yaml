@@ -33,7 +33,8 @@ spec:
     unhealthyMachineTimeout: 5m0s
   managementCluster:
     name: eksa-gitops-mgmt-171
-
+  podIamConfig:
+    serviceAccountIssuer: https://s3.us-east-1.amazonaws.com/oidc-key
 ---
 apiVersion: anywhere.eks.amazonaws.com/v1alpha1
 kind: TinkerbellDatacenterConfig
