@@ -23,7 +23,7 @@ spec:
   datacenterRef:
     kind: TinkerbellDatacenterConfig
     name: eksa-aio-dcc
-  eksaVersion: v0.19.1
+  eksaVersion: v0.18.0
   gitOpsRef:
     kind: FluxConfig
     name: my-github-flux-provider
