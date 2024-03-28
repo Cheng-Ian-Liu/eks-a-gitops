@@ -1,0 +1,55 @@
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: Cluster
+metadata:
+  name: eksa-gitops-workload-140
+  namespace: default
+spec:
+  clusterNetwork:
+    cniConfig:
+      cilium: {}
+    pods:
+      cidrBlocks:
+      - 192.168.0.0/16
+    services:
+      cidrBlocks:
+      - 10.96.0.0/12
+  controlPlaneConfiguration:
+    count: 1
+    endpoint:
+      host: "192.168.1.204"
+    machineGroupRef:
+      kind: TinkerbellMachineConfig
+      name: eksa-aio-mc-wl-140
+  datacenterRef:
+    kind: TinkerbellDatacenterConfig
+    name: eksa-aio-dcc-wl-140
+  kubernetesVersion: "1.26"
+  managementCluster:
+    name: eksa-gitops-mgmt-171
+---
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: TinkerbellDatacenterConfig
+metadata:
+  name: eksa-aio-dcc-wl-140
+  namespace: default
+spec:
+  # This is the IP used for load balancing all the Tinkerbell components that are transferred to the actual
+  # cluster from bootstrap cluster and this should be in the same subnet as the control-plane vip provided above
+  tinkerbellIP: "192.168.1.67"
+  osImageURL: "http://192.168.1.80:9900/ubuntu-2204-eng-v1.26.6-kernerl-5.15.0-76-generic.gz"
+  hookImagesURLPath: "http://192.168.1.80:9900/hook"
+
+---
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: TinkerbellMachineConfig
+metadata:
+  name: eksa-aio-mc-wl-140
+  namespace: default
+spec:
+  hardwareSelector:
+    type: aio-wl-140
+  osFamily: ubuntu
+  users:
+  - name: ec2-user
+    sshAuthorizedKeys:
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/d41oCiLIsOLGk3onhPHt9M4elYn2r0YIrZfycy5B76CdB9Ulhc2jbQriGHxcoLc46jaoZ6ta7Wp3ajZfBS++soMVxxsz2PupF6Wo0KMWLTMXV7wicIdLc9WJjOJ+d8qNxMzQVfqcnVYEbyo6ffPL3RvTwhLdKQ5ZTXezU5O1L8daoBTmw1Xx8MWfTXMNbujTra7IE/1kQxtmeM2xLkJY4ocjMvdWKdyKb2oqAOMMuq5Xpgqhbu9cUsrrOr0C0MaX7xbD76fx5fpypC8ChPryN+SXIbBuC9DRbVbdgUfDnmDTzDgO73LY590pOUWh+sey0ypS6ULAC6vqveG0nv3h/JPpg8QyMMSKjUTi96CXxei/8LjwxhrPqJi5gBftkhsu1m1sxjVSpZJl3yun5tacQi+0XRM35wtOpSgs+JX4jGNJxFKfsT2xTORY0wBL1UT9BpmII7lhK5hvqvCCK+dmMeZAhCZWz9cLMliS74jOyPEIZ4OFbP7XcdVqgLu3pEOQEjNzlrGMLqxvhdNes/g46vQdPoznZZZqlnoGnD6fiIXN8iS3q1KaYYlDw0Htx0kIYevZM8l3VIUouSk821U8gjy/H4s5b/BBkMLFJTatF0DQ2eQAqnOd/eNeoz6y56BywMmjyIuYfomX4EIJraDFPaJdR3zQa+UcYWoC6RpKcQ==
