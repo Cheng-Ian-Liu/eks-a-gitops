@@ -27,7 +27,7 @@ spec:
   gitOpsRef:
     kind: FluxConfig
     name: my-github-flux-provider
-  kubernetesVersion: "1.26"
+  kubernetesVersion: "1.27"
   machineHealthCheck:
     nodeStartupTimeout: 20m0s
     unhealthyMachineTimeout: 5m0s
@@ -42,7 +42,7 @@ metadata:
   namespace: default
 spec:
   hookImagesURLPath: http://192.168.1.80:9900/hook
-  osImageURL: http://192.168.1.80:9900/ubuntu-2204-eng-v1.26.6-kernerl-5.15.0-76-generic.gz
+  osImageURL: http://192.168.1.80:9900/ubuntu-2204-eng-v1.27.0-kernerl-5.15.0-76-generic.gz
   tinkerbellIP: 192.168.1.67
 
 ---
