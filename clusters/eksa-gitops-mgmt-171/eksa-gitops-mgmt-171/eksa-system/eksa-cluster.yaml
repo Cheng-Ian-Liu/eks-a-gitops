@@ -1,0 +1,81 @@
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: Cluster
+metadata:
+  name: eksa-gitops-mgmt-171
+  namespace: default
+spec:
+  clusterNetwork:
+    cniConfig:
+      cilium: {}
+    pods:
+      cidrBlocks:
+      - 192.168.0.0/16
+    services:
+      cidrBlocks:
+      - 10.96.0.0/12
+  controlPlaneConfiguration:
+    count: 1
+    endpoint:
+      host: 192.168.1.66
+    machineGroupRef:
+      kind: TinkerbellMachineConfig
+      name: eksa-aio-mc
+  datacenterRef:
+    kind: TinkerbellDatacenterConfig
+    name: eksa-aio-dcc
+  eksaVersion: v0.18.4
+  gitOpsRef:
+    kind: FluxConfig
+    name: my-github-flux-provider
+  kubernetesVersion: "1.26"
+  machineHealthCheck:
+    nodeStartupTimeout: 20m0s
+    unhealthyMachineTimeout: 5m0s
+  managementCluster:
+    name: eksa-gitops-mgmt-171
+
+---
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: TinkerbellDatacenterConfig
+metadata:
+  name: eksa-aio-dcc
+  namespace: default
+spec:
+  hookImagesURLPath: http://192.168.1.80:9900/hook
+  osImageURL: http://192.168.1.80:9900/ubuntu-2204-eng-v1.26.6-kernerl-5.15.0-76-generic.gz
+  tinkerbellIP: 192.168.1.67
+
+---
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: TinkerbellMachineConfig
+metadata:
+  annotations:
+    anywhere.eks.amazonaws.com/control-plane: "true"
+  name: eksa-aio-mc
+  namespace: default
+spec:
+  hardwareSelector:
+    type: aio
+  osFamily: ubuntu
+  templateRef: {}
+  users:
+  - name: ec2-user
+    sshAuthorizedKeys:
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCixQ6JVVFAs7d6+YOxOFNDJumWv8bz0OCcM8hEBjM5VNhnAnFtgpoWgnQPgnjp7C2u0IvDRLFntJ07oa4MPBTeVNMeNhzHiTeGau3ROcW5dtT0OL31QsvgftGhTLqYCFyrhirrsDj7/rZQhPmHSnLi3BxY9JrIb1xO48kEg9vmKTVi4vOqCGObrRFffKb3FJnULe5yFwTnkQPaob5EVp7z+zedyy7BWh0qw3+WzDmrqasz/I+cc6/bgr6dyS1YwlTgvnFuaaTzQSJQwzXv23TPIQjUpdmcMV4DnaLngKZl01qBjdsuwelPrlz0f3numfjcOtmVf5OxoVutmt4mwqH09j6BepR20lAO0C6BpJ3IJPb/rGs4d0+1ljwBwhUriTuhgDj2SUQGZz2UPDHwwK0+y2JZA2P5oFV8iBzGuC3t8o+WlzrZtqHgPEBkJi9j3HyWt+70cTIaHhNODLh3aeo4jkLHXs2kbSUxz7OuWEacfvJFvWzZ6/DF/chAgVDfdJdoHAfq9iJK8uufvUHsLGM/5i36y2jDSpecjy4WMuRQBXkK0A3DZ9M0GQVnlxsHJzRC5D5c03FCM9+e8d9ivuqPhLJZBysMvvyR0XqkxextXHH5R2RMc42DCoV9pSdNd8mGBYG6XnGgVEWepRlmXWtNCXkS45C79Vi+TAOQFI3uPw==
+
+---
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: FluxConfig
+metadata:
+  name: my-github-flux-provider
+  namespace: default
+spec:
+  branch: main
+  clusterConfigPath: clusters/eksa-gitops-mgmt-171
+  github:
+    owner: Cheng-Ian-Liu
+    personal: true
+    repository: eks-a-gitops
+  systemNamespace: flux-system
+
+---
