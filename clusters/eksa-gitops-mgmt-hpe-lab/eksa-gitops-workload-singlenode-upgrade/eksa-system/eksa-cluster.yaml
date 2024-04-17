@@ -26,7 +26,7 @@ spec:
   gitOpsRef:
     kind: FluxConfig
     name: my-github-flux-provider
-  kubernetesVersion: "1.26"
+  kubernetesVersion: "1.27"
   managementCluster:
     name: eksa-gitops-mgmt
 ---
@@ -37,7 +37,7 @@ metadata:
   namespace: default
 spec:
   hookImagesURLPath: http://10.45.10.30:9900/hook
-  osImageURL: http://10.45.10.30:9900/ubuntu-2204-eng-v1.26.6-kernerl-5.15.0-76-generic.gz
+  osImageURL: http://10.45.10.30:9900/ubuntu-2204-eng-v1.27.11-kernerl-5.15.0-101-generic.gz
   tinkerbellIP: 10.45.10.63
 ---
 apiVersion: anywhere.eks.amazonaws.com/v1alpha1
