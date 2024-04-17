@@ -1,0 +1,56 @@
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: Cluster
+metadata:
+  name: eksa-gitops-workload-sn
+  namespace: default
+spec:
+  clusterNetwork:
+    cniConfig:
+      cilium: {}
+    pods:
+      cidrBlocks:
+      - 192.168.0.0/16
+    services:
+      cidrBlocks:
+      - 10.96.0.0/12
+  controlPlaneConfiguration:
+    count: 1
+    endpoint:
+      host: 10.45.10.87
+    machineGroupRef:
+      kind: TinkerbellMachineConfig
+      name: eksa-aio-mc-wl-sn
+  datacenterRef:
+    kind: TinkerbellDatacenterConfig
+    name: eksa-aio-dcc-wl-sn
+  gitOpsRef:
+    kind: FluxConfig
+    name: my-github-flux-provider
+  kubernetesVersion: "1.26"
+  managementCluster:
+    name: eksa-gitops-mgmt
+---
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: TinkerbellDatacenterConfig
+metadata:
+  name: eksa-aio-dcc-wl-sn
+  namespace: default
+spec:
+  hookImagesURLPath: http://10.45.10.30:9900/hook
+  osImageURL: http://10.45.10.30:9900/ubuntu-2204-eng-v1.26.6-kernerl-5.15.0-76-generic.gz
+  tinkerbellIP: 10.45.10.63
+---
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: TinkerbellMachineConfig
+metadata:
+  name: eksa-aio-mc-wl-sn
+  namespace: default
+spec:
+  hardwareSelector:
+    type: workload-sn
+  osFamily: ubuntu
+  templateRef: {}
+  users:
+  - name: ec2-user
+    sshAuthorizedKeys:
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDEusSK9I4Y+oEJFfKAihiBKOx8UxBG7ES16xiMXTuZfz5M/nu1vFWfQv1bxTmQOm6j7zyKZptyTLDXhz8YkX8/YFrr/MupLK2E5zf09WneSF2WeOwAA8BMuDT88dtiaQ04+OwXW2axzYO/0Oc7o5y+cvN1rdSwitKN6Vq4Ndgpp25eJwOOv3FkTL2Bd0PeXxARnKH6GSM9D+Mkc8ohst6J+CJ52Vq2ig7mShpO/9xuzOtJPIc+lACs469/BbtHCdTHzihS7q6vwo7sdvgpGI5LTN272U5wtD2kluOqBRiP1CmDv8hEfHELH846M9GEFReRJGIB/7qVMglnILeLMoU1qW3P40RSwJQ/NG/ewXPOhDLzcyZvpqORSedzQMXqnd/Zi4qPjlNV9wHSxP4CNq1koqv/oKUbbG9P4zqYDSCd3X93OJzT/mEvbtAe1KogwKi2Bsh6p0KvUoqjzONZve2fn987b4wMhWRfx8NBF624lCe+lXYb+wUw++EGFNh+M2KLk5cGzSfXHp3RwQ6g59wLjG2wX1T1DCXZV2X7TjYb9c0Sa9W8wRt8EJLsVXcM4iD3XqqL6h2Ay3SVaa2+VXzvu+42fN+uSdr1yrl0qs0CSjxOYdrVIG/deOL2SrrsWBG3jAbCFJ5uy/NbpZmpCUR0aJ5/jNzrhJMUzL0JY3RVGw==    
