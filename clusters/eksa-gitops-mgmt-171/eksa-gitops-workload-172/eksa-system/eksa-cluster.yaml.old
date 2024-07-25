@@ -26,6 +26,9 @@ spec:
   kubernetesVersion: "1.28"
   managementCluster:
     name: eksa-gitops-mgmt-171
+  gitOpsRef:
+    kind: FluxConfig
+    name: github-flux-provider
 ---
 apiVersion: anywhere.eks.amazonaws.com/v1alpha1
 kind: TinkerbellDatacenterConfig
@@ -38,7 +41,6 @@ spec:
   tinkerbellIP: "192.168.1.67"
   osImageURL: "http://192.168.1.80:9900/ubuntu-2204-eng-v1.28.7-kernerl-5.15.0-102-generic.gz"
   hookImagesURLPath: "http://192.168.1.80:9900/hook"
-
 ---
 apiVersion: anywhere.eks.amazonaws.com/v1alpha1
 kind: TinkerbellMachineConfig
@@ -53,3 +55,14 @@ spec:
   - name: ec2-user
     sshAuthorizedKeys:
     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDfgxHuDGrNN2BSIGRsgYAvcKdshzBmHP8QhFMgr1F4rFeu8x57jemEp0x7DSX3BKqyqzOpaDOc75H/uHEqvimP8NE21przt72VG2NtRByT6M2JiWzLRPzdgddaRX071Vsb4OsivRPWQIkEHZTk7TF4lb5Sp62eLa8jRBmBwwTlDEwvlMquAcpmT92yZgp181F0BTof3lfCVGZZyv071vhiOGayQs4zNuU78atE9mKzbyeBEWZGY9riG4AEvYwqyOCCiQKhyVq4SxU/jkMxiYri3B/Jpc+7GBEwnqbxJjuFxd+IgcCgitenrr+b2xvoX8jWmvFEYy0k+JIttMndMTIp3Njy+5vW1Kxdiv0zJ16515Qeld0BUPZOAAOMnCUhMh8l5T0mVVzFz7a9ybavXpX1RmBYQb9ZtBPcV7ikTUYbPYZSkg/E777XA3fjf36AwNJpVvMjzXDYMp0bvna1D2/Xi/wAWHiBxMGTYmEzetbdVEe5SW6QWZELTnouXIihLMBXtdbUKFfdtCH6jXWhpz8vOWd8FFpnf9oWIRfgZmIb84GCbb8dkbKf1hJiFX6ubL2doexg+tcNXhdpxBBxiph1gljsdw0Lod6nA71ea/BREozwdbanVxUrceFjP7wwB96O7XR7PgE6zNEVdFWp/1duYBUTMEKCTeYCt/Zvch6gjQ==
+---
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: FluxConfig
+metadata:
+  name: github-flux-provider
+  namespace: default
+spec:
+  github:
+    personal: true
+    repository: eks-a-workload-gitops
+    owner: Cheng-Ian-Liu
