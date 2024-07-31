@@ -24,8 +24,8 @@ spec:
     server:
       global:
         external_labels:
-          cluster: eksa-gitops-workload-33
+          cluster: eksa-gitops-workload-172-sn
       remoteWrite:
-      - url: http://172.16.45.3:31000/api/v1/write
+      - url: http://3.15.228.137:31000/api/v1/write
   install:
     disableWait: true
