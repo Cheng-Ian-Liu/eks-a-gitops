@@ -23,7 +23,7 @@ spec:
   datacenterRef:
     kind: TinkerbellDatacenterConfig
     name: eksa-aio-dcc-wl-172-sn
-  kubernetesVersion: "1.28"
+  kubernetesVersion: "1.26"
   managementCluster:
     name: eksa-gitops-mgmt-171
 ---
@@ -36,7 +36,7 @@ spec:
   # This is the IP used for load balancing all the Tinkerbell components that are transferred to the actual
   # cluster from bootstrap cluster and this should be in the same subnet as the control-plane vip provided above
   tinkerbellIP: "192.168.1.67"
-  osImageURL: "http://192.168.1.80:9900/ubuntu-2204-eng-v1.28.7-kernerl-5.15.0-102-generic.gz"
+  osImageURL: "http://192.168.1.80:9900/ubuntu-2204-kube-1-26.gz"
   hookImagesURLPath: "http://192.168.1.80:9900/hook"
 ---
 apiVersion: anywhere.eks.amazonaws.com/v1alpha1
