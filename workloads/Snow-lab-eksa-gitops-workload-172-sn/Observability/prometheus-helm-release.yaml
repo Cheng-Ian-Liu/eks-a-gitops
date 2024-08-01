@@ -15,6 +15,9 @@ spec:
   interval: 1m0s
   releaseName: prometheus-release
   values:
+    alertmanager:
+      persistentVolume:
+        storageClass: alertmanager-storage-class
     prometheus-node-exporter:
       extraArgs:
       - --collector.processes
@@ -23,13 +26,10 @@ spec:
     server:
       global:
         external_labels:
-          cluster: eksa-gitops-workload-172-sn
-      remoteWrite:
-      - url: http://3.15.228.137:31000/api/v1/write
+          cluster: eksa-gitops-workload-33
       persistentVolume:
         storageClass: prometheus-storage-class
-    alertmanager:
-      persistentVolume:
-        storageClass: alertmanager-storage-class
+      remoteWrite:
+      - url: http://3.15.228.137:31000/api/v1/write
   install:
     disableWait: true
