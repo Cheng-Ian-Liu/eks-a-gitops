@@ -27,7 +27,9 @@ spec:
       remoteWrite:
       - url: http://3.15.228.137:31000/api/v1/write
       persistentVolume:
-        enabled: true
         storageClass: prometheus-storage-class
+    alertmanager:
+      persistentVolume:
+        storageClass: alertmanager-storage-class
   install:
     disableWait: true
