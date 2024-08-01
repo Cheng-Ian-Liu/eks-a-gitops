@@ -22,15 +22,17 @@ spec:
       - --collector.tcpstat
       - --collector.systemd
     server:
-      persistentVolume:
-        storageClass: prometheus-storage-class
       global:
         external_labels:
           cluster: eksa-gitops-workload-172-sn
       remoteWrite:
       - url: http://3.15.228.137:31000/api/v1/write
+      persistentVolume:
+        storageClass:
+          storageClassName: prometheus-storage-class
     alertmanager:
       persistentVolume:
-        storageClass: alertmanager-storage-class
+        storageClass:
+          storageClassName: alertmanager-storage-class
   install:
     disableWait: true
