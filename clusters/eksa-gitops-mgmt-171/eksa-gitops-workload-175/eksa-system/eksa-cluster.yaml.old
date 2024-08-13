@@ -16,7 +16,7 @@ spec:
   controlPlaneConfiguration:
     count: 1
     endpoint:
-      host: "192.168.1.202"
+      host: "192.168.1.201"
     machineGroupRef:
       kind: TinkerbellMachineConfig
       name: eksa-aio-mc-wl-175-sn
