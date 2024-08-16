@@ -1,0 +1,55 @@
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: Cluster
+metadata:
+  name: eksa-gitops-workload-171-snow
+  namespace: default
+spec:
+  clusterNetwork:
+    cniConfig:
+      cilium: {}
+    pods:
+      cidrBlocks:
+      - 192.168.0.0/16
+    services:
+      cidrBlocks:
+      - 10.96.0.0/12
+  controlPlaneConfiguration:
+    count: 1
+    endpoint:
+      host: "192.168.1.66"
+    machineGroupRef:
+      kind: TinkerbellMachineConfig
+      name: eksa-aio-mc-wl-171-sn
+  datacenterRef:
+    kind: TinkerbellDatacenterConfig
+    name: eksa-aio-dcc-wl-171-sn
+  kubernetesVersion: "1.28"
+  managementCluster:
+    name: eksa-gitops-mgmt-multinode-snow
+---
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: TinkerbellDatacenterConfig
+metadata:
+  name: eksa-aio-dcc-wl-171-sn
+  namespace: default
+spec:
+  # This is the IP used for load balancing all the Tinkerbell components that are transferred to the actual
+  # cluster from bootstrap cluster and this should be in the same subnet as the control-plane vip provided above
+  tinkerbellIP: "192.168.1.209"
+  osImageURL: "http://192.168.1.80:9900/ubuntu-2204-eng-v1.28.7-kernerl-5.15.0-102-generic.gz"
+  hookImagesURLPath: "http://192.168.1.80:9900/hook"
+
+---
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: TinkerbellMachineConfig
+metadata:
+  name: eksa-aio-mc-wl-171-sn
+  namespace: default
+spec:
+  hardwareSelector:
+    type: sn-171
+  osFamily: ubuntu
+  users:
+  - name: ec2-user
+    sshAuthorizedKeys:
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDTLFbh/ktGFrX6L+2doQqL6AEPKUkfJzDgE6l4m2TQrcDHf+zHUHen6ahStHliCTCoUFzR9v29ifl1eAQ5M2MXEiplExMaQ9CA8cSfpua41K1dCVD6Y/HR6ND+V74YApC7otl6V7UpNkcKavgwdGCJqHPsqKLisPyB4+3XxoYY4Jkn41u86I2LTQpJWZOSwcvfnGehl1qJOL+ayAHO8Ggt1DPjB2RDspSoDNPu9nt0Hqeix5uW/PKpDa8yjtcOXbvh4R1MV8MFDWkAxqNbp8PMlPbBpqYLglhtA1RMt7OYr8aSWYPcOVMkoi/H840yekAW7iXM2Guj4+LpVsemWx07tMC7DYIrW6nWrDK7d2vBGvjuxni1LMFfWoq8mBRbRivkzefuvaYWzm6KKxtFF7kvKvjGQf1CIh1Q2lPgbMrx8p542VvtO+5aqPnrlrHMRX+oTy1+vBjNe9M94zUIsLdHtC2oLfj3DsF1Pp+JEA6H2bsDdNpTspSWnx2TWZlcaCiXLswGB2+3tDcvCgdsgAP6YfzBon6r2lPUF1eM4HsSa7GnRkIQU02cZ+1l7pVNS5UwgnXeKk+1aZ10JvSqNNeNRlVgOfrDJJ2/rwFagzWjVjU4QmoFYg6GWfn8WgOB5jD55uCVQJbAFBI9vCTu3oromTgUsHpTboeMJjf8mSp6rQ==
