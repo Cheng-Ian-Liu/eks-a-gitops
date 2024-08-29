@@ -24,7 +24,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: flux-system
+    name: flux-system-workload
   kubeConfig:
     secretRef:
       name: eksa-gitops-workload-175-snow-kubeconfig  # Cluster API created this for the matching Cluster
